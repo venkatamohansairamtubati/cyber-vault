@@ -1,0 +1,1421 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CYBER VAULT — Enterprise Threat Intelligence &amp; Forensic Operations</title>
+  <meta name="description"
+    content="Cyber Vault — Enterprise Threat Intelligence, Malware Analysis & Forensic Operations Center. Strict Zero-Trust Enclave." />
+
+  <!-- Modern Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&family=Orbitron:wght@500;600;700;800;900&family=Rajdhani:wght@500;600;700;800&display=swap"
+    rel="stylesheet" />
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body class="loading-state">
+
+  <!-- ========================================================================= -->
+  <!-- 3D WEBGL CYBER WORLD CANVAS (Global Ambient Layer) -->
+  <!-- ========================================================================= -->
+  <div id="cyber-world-container" class="cyber-world-canvas-wrap"></div>
+
+  <!-- Ambient Vignette Overlay -->
+  <div class="cyber-vignette"></div>
+
+  <!-- ========================================================================= -->
+  <!-- STAGE 1 — CINEMATIC CYBER VAULT INTRO & 3D EAGLE EXPERIENCE -->
+  <!-- ========================================================================= -->
+  <section id="stage-intro" class="app-stage active">
+    <canvas id="intro-particles-canvas" class="intro-particles-canvas"></canvas>
+
+    <!-- Ambient HUD Telemetry Grid Corners (No ML/Backend details leaked) -->
+    <div class="intro-hud-overlay">
+      <div class="hud-corner top-left">
+        <span class="hud-coord-text">SECURITY OPERATIONS CENTER // ENCLAVE-01</span>
+        <span class="hud-micro-line">DEFENSE POSTURE: CONTINUOUS SURVEILLANCE</span>
+      </div>
+      <div class="hud-corner top-right">
+        <span class="hud-coord-text">SYSTEM DEFENSE STATUS: ARMED</span>
+        <span class="hud-micro-line">ZERO-TRUST PROTOCOL: ENFORCED</span>
+      </div>
+      <div class="hud-corner bottom-left">
+        <span class="hud-coord-text">CRYPTOGRAPHIC INTEGRITY: VERIFIED</span>
+        <span class="hud-micro-line">FORENSIC ENGINE: READY</span>
+      </div>
+      <div class="hud-corner bottom-right">
+        <span class="hud-coord-text">ANALYST WORKSPACE: ISOLATED</span>
+        <span class="hud-micro-line">CYBER VAULT ENTERPRISE GATEWAY</span>
+      </div>
+    </div>
+
+    <!-- Center Intro Content -->
+    <div class="intro-center-stage">
+      <div class="intro-brand-block" id="intro-brand-block">
+        <div class="intro-badge-pill">
+          <span class="pulse-beacon"></span>
+          <span>ENTERPRISE CYBER DEFENSE SYSTEM</span>
+        </div>
+        <h1 class="intro-hero-title">CYBER <span class="hero-glow-text">VAULT</span></h1>
+        <h2 class="intro-hero-subtitle">ENTERPRISE THREAT INTELLIGENCE &amp; FORENSIC OPERATIONS CENTER</h2>
+        <div class="intro-tagline">DETECT &bull; ANALYZE &bull; EXPLAIN &bull; DEFEND</div>
+
+        <!-- Action Button: ENTER CYBER VAULT -->
+        <div class="intro-action-container">
+          <button type="button" class="btn-enter-vault" id="btn-enter-lab" onclick="enterCyberVaultDashboard()">
+            <span class="btn-glow-border"></span>
+            <span>ENTER CYBER VAULT</span>
+            <span class="btn-arrow-flare">➔</span>
+          </button>
+        </div>
+
+        <!-- Legacy compatibility readouts -->
+        <div id="lock-readout-text" class="hidden">INITIALIZING FORENSIC ENVIRONMENT</div>
+        <div id="vault-lock-3d" class="hidden"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================================= -->
+  <!-- STAGE 2 — SECURE ZERO-TRUST AUTHENTICATION ENCLAVE -->
+  <!-- ========================================================================= -->
+  <section id="stage-auth" class="app-stage hidden">
+    <div class="entry-glass-card" id="auth-glass-card">
+      <div class="entry-brand">CYBER <span class="highlight-yellow">VAULT</span></div>
+      <div class="entry-sub-brand">ZERO-TRUST SECURITY ENCLAVE // AUTHORIZED ACCESS ONLY</div>
+
+      <!-- Security Status Indicators -->
+      <div class="auth-security-strip">
+        <span>🔒 256-BIT ENCRYPTED TLS</span>
+        <span>|</span>
+        <span>GATEWAY: <strong class="text-yellow" id="auth-status-indicator">ONLINE</strong></span>
+      </div>
+
+      <div class="auth-status-banner hidden" id="auth-status-banner"></div>
+
+      <!-- Auth Container -->
+      <div class="auth-box" id="auth-container">
+        <!-- Active Session Detected Box -->
+        <div id="auth-active-session-box" class="auth-active-session-box" style="display: none;">
+          <div style="text-align: center; margin-bottom: 16px;">
+            <div style="font-family: var(--font-mono); font-size: 11px; color: var(--cv-yellow); margin-bottom: 6px;">[ ACTIVE SESSION DETECTED ]</div>
+            <div style="font-size: 16px; font-weight: 700; color: #ffffff;" id="auth-active-name">Security Analyst</div>
+            <div style="font-family: var(--font-mono); font-size: 11px; color: var(--cv-gray);" id="auth-active-email">analyst@cybervault.io</div>
+          </div>
+          <button type="button" class="auth-btn" id="btn-continue-session" onclick="continueActiveSession()">
+            ENTER PRIVATE WORKSPACE ➔
+          </button>
+          <div style="text-align: center; margin-top: 12px;">
+            <button type="button" class="auth-switch-btn" onclick="performLogout()">[ Sign Out / Switch Account ]</button>
+          </div>
+        </div>
+
+        <div class="auth-tabs" id="auth-tabs-row">
+          <button type="button" class="auth-tab-btn active" id="tab-login" onclick="switchAuthTab('login')">LOGIN</button>
+          <button type="button" class="auth-tab-btn" id="tab-register" onclick="switchAuthTab('register')">REGISTER</button>
+        </div>
+
+        <!-- Login Form -->
+        <form id="form-login" class="auth-form active" onsubmit="event.preventDefault(); submitLogin();">
+          <div class="auth-field">
+            <label for="auth-login-email">ANALYST EMAIL</label>
+            <input type="email" id="auth-login-email" class="auth-input" placeholder="analyst@enterprise.io" required autocomplete="email" />
+          </div>
+          <div class="auth-field">
+            <label for="auth-login-password">PASSWORD</label>
+            <input type="password" id="auth-login-password" class="auth-input" placeholder="••••••••••••" required autocomplete="current-password" />
+            <div style="display: flex; justify-content: flex-end; margin-top: 6px;">
+              <button type="button" class="auth-forgot-link" id="btn-forgot-password-link" onclick="switchAuthTab('forgot')">Forgot Password?</button>
+            </div>
+          </div>
+          <button type="submit" class="auth-btn" id="btn-login-submit">[ SECURE LOGIN ]</button>
+          <div class="auth-switch-prompt">
+            <span>New analyst to the organization?</span>
+            <button type="button" class="auth-switch-btn" onclick="switchAuthTab('register')">CREATE ACCOUNT</button>
+          </div>
+        </form>
+
+        <!-- Register Form (Step 1) -->
+        <form id="form-register" class="auth-form" onsubmit="event.preventDefault(); submitRegister();" style="display: none;">
+          <div class="auth-field">
+            <label for="auth-reg-name">FULL NAME</label>
+            <input type="text" id="auth-reg-name" class="auth-input" placeholder="Alex Morgan" required autocomplete="name" />
+          </div>
+          <div class="auth-field">
+            <label for="auth-reg-email">ENTERPRISE EMAIL</label>
+            <input type="email" id="auth-reg-email" class="auth-input" placeholder="analyst@enterprise.io" required autocomplete="email" />
+          </div>
+          <div class="auth-field">
+            <label for="auth-reg-password">PASSWORD</label>
+            <input type="password" id="auth-reg-password" class="auth-input" placeholder="••••••••••••" required minlength="8" autocomplete="new-password" />
+          </div>
+          <button type="submit" class="auth-btn" id="btn-register-submit">[ DISPATCH VERIFICATION CODE ]</button>
+          <div class="auth-switch-prompt">
+            <span>Already have an account?</span>
+            <button type="button" class="auth-switch-btn" onclick="switchAuthTab('login')">LOGIN</button>
+          </div>
+        </form>
+
+        <!-- OTP Verification Form (Step 2) -->
+        <form id="form-verify-otp" class="auth-form" onsubmit="event.preventDefault(); submitVerifyOtp();" style="display: none;">
+          <div style="text-align: center; margin-bottom: 14px;">
+            <div style="color: var(--cv-yellow); font-family: var(--font-mono); font-size: 11px; margin-bottom: 4px;">VERIFICATION CODE DISPATCHED</div>
+            <p style="font-size: 12px; color: var(--cv-white-muted);">Enter the 6-digit code sent to <strong class="text-white" id="otp-target-email">your email</strong>:</p>
+          </div>
+          <div class="auth-field">
+            <label for="auth-reg-otp">6-DIGIT OTP CODE</label>
+            <input type="text" id="auth-reg-otp" class="auth-input font-mono" placeholder="123456" maxlength="6" pattern="[0-9]{6}" required style="text-align: center; font-size: 18px; letter-spacing: 6px;" />
+          </div>
+          <button type="submit" class="auth-btn" id="btn-verify-otp-submit">[ VERIFY &amp; ACTIVATE ACCOUNT ]</button>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 14px;">
+            <button type="button" class="auth-switch-btn" onclick="resendRegistrationOtpCode()">Resend Code</button>
+            <button type="button" class="auth-switch-btn" onclick="switchAuthTab('register')">← Back</button>
+          </div>
+        </form>
+
+        <!-- Forgot Password Box -->
+        <div id="auth-forgot-box" class="auth-form" style="display: none;">
+          <div id="forgot-form-container">
+            <div class="auth-field">
+              <label for="auth-forgot-email">REGISTERED EMAIL</label>
+              <input type="email" id="auth-forgot-email" class="auth-input" placeholder="analyst@enterprise.io" required autocomplete="email" />
+            </div>
+            <button type="button" class="auth-btn" id="btn-forgot-send" onclick="submitForgotPassword()">[ SEND RESET INSTRUCTIONS ]</button>
+            <div class="auth-switch-prompt">
+              <button type="button" class="auth-switch-btn" onclick="switchAuthTab('login')">← Back to Login</button>
+            </div>
+          </div>
+          <div id="forgot-success-container" style="display: none; text-align: center; padding: 10px;">
+            <div style="color: var(--cv-yellow); font-size: 14px; font-weight: 700; margin-bottom: 8px;">RESET INSTRUCTIONS SENT</div>
+            <p style="color: var(--cv-gray); font-size: 12px; margin-bottom: 14px;">Check your email for password recovery steps.</p>
+            <button type="button" class="auth-btn" onclick="switchAuthTab('login')">BACK TO LOGIN</button>
+          </div>
+        </div>
+
+        <!-- Reset Password Box -->
+        <div id="auth-reset-box" class="auth-form" style="display: none;">
+          <div id="reset-form-container">
+            <div class="auth-field">
+              <label for="auth-reset-new-password">NEW PASSWORD</label>
+              <input type="password" id="auth-reset-new-password" class="auth-input" placeholder="••••••••••••" required minlength="8" autocomplete="new-password" />
+            </div>
+            <div class="auth-field">
+              <label for="auth-reset-confirm-password">CONFIRM PASSWORD</label>
+              <input type="password" id="auth-reset-confirm-password" class="auth-input" placeholder="••••••••••••" required minlength="8" autocomplete="new-password" />
+            </div>
+            <button type="submit" class="auth-btn" id="btn-reset-password-submit" onclick="submitResetPassword()">[ UPDATE CREDENTIALS ]</button>
+          </div>
+          <div id="reset-expired-container" style="display: none; text-align: center;">
+            <div style="color: var(--cv-yellow); font-weight: 700;">LINK EXPIRED</div>
+            <button type="button" class="auth-btn" onclick="switchAuthTab('forgot')">REQUEST NEW LINK</button>
+          </div>
+          <div id="reset-success-container" style="display: none; text-align: center;">
+            <div style="color: #ffffff; font-weight: 700;">PASSWORD UPDATED</div>
+            <button type="button" class="auth-btn" onclick="switchAuthTab('login')">LOGIN NOW</button>
+          </div>
+        </div>
+
+        <!-- Separate Admin Portal Access Entry Point -->
+        <div class="admin-portal-access-row">
+          <button type="button" class="admin-access-link" onclick="openAdminPortalEntry()">
+            🛡️ [ ADMINISTRATOR ACCESS ]
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================================= -->
+  <!-- STAGE 3 — MAIN CYBERSECURITY COMMAND CENTER DASHBOARD (NORMAL USER) -->
+  <!-- ========================================================================= -->
+  <section id="stage-dashboard" class="app-stage hidden">
+
+    <!-- TOP BAR -->
+    <header class="top-hud-bar" id="top-hud-bar">
+      <div class="hud-brand-block" onclick="navigateTo('view-dashboard')">
+        <svg class="hud-eagle-icon-svg" viewBox="0 0 100 100" fill="none">
+          <path d="M50 8 L58 26 L76 18 L64 36 L88 32 L70 50 L94 54 L66 66 L82 82 L50 72 L18 82 L34 66 L6 54 L30 50 L12 32 L36 36 L24 18 L42 26 Z" fill="#ffd400" />
+        </svg>
+        <div class="hud-title-col">
+          <div class="hud-main-title">CYBER <span class="text-yellow">VAULT</span></div>
+          <div class="hud-sub-title">SECURE FORENSIC OPERATIONS CENTER</div>
+        </div>
+      </div>
+
+      <!-- Telemetry Tickers -->
+      <div class="hud-telemetry-row">
+        <div class="telemetry-pill">
+          <span class="telemetry-dot"></span>
+          <span class="telemetry-label">SYSTEM STATUS:</span>
+          <strong class="telemetry-val text-yellow" id="hud-backend-status">ONLINE</strong>
+        </div>
+
+        <div class="telemetry-pill">
+          <span class="telemetry-label">LAST ANALYSIS:</span>
+          <strong class="telemetry-val" id="hud-last-analysis-ticker">READY</strong>
+        </div>
+
+        <div class="telemetry-pill">
+          <span class="telemetry-label">THREAT ENGINE:</span>
+          <strong class="telemetry-val text-yellow" id="hud-model-status">INTELLIGENCE ENCLAVE</strong>
+        </div>
+
+        <div class="telemetry-pill">
+          <span class="telemetry-label">UTC:</span>
+          <strong class="telemetry-val font-mono" id="hud-live-clock">00:00:00 UTC</strong>
+        </div>
+      </div>
+
+      <!-- Right Controls & Profile -->
+      <div class="hud-right-actions">
+        <button type="button" class="btn-logout" id="btn-toggle-camera" onclick="window.CyberEagleEngine?.resetCamera()" title="Recenter 3D View">
+          ⟲ RECENTER 3D
+        </button>
+        <div class="analyst-badge" onclick="navigateTo('view-profile')">
+          <div class="analyst-avatar-initials" id="hud-avatar-initials">CV</div>
+          <div class="analyst-info">
+            <div class="analyst-role">SECURITY ANALYST</div>
+            <div class="analyst-name" id="hud-analyst-name">Analyst</div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- DASHBOARD APP SHELL WITH SIDEBAR AND MAIN CONTENT -->
+    <div class="app-shell" id="app-shell">
+
+      <!-- LEFT NAVIGATION (Normal User: No Admin or Dev Controls) -->
+      <aside class="sidebar">
+        <div class="sidebar-header" onclick="navigateTo('view-dashboard')" style="cursor: pointer;">
+          <div class="sidebar-brand-text">
+            <span class="brand-title">CYBER VAULT</span>
+            <span class="brand-sub">PRIVATE INVESTIGATION LAB</span>
+          </div>
+        </div>
+
+        <nav class="sidebar-nav">
+          <div class="nav-section-label">OPERATIONS</div>
+          <button type="button" class="nav-item active" data-view="view-dashboard">
+            <span class="nav-symbol">◈</span>
+            <span class="nav-text">OVERVIEW</span>
+          </button>
+
+          <button type="button" class="nav-item" data-view="view-analysis">
+            <span class="nav-symbol">🔬</span>
+            <span class="nav-text">FILE LAB</span>
+          </button>
+
+          <div class="nav-section-label">FORENSIC TELEMETRY</div>
+          <button type="button" class="nav-item" data-view="view-memory">
+            <span class="nav-symbol">💾</span>
+            <span class="nav-text">MEMORY FORENSICS</span>
+          </button>
+
+          <button type="button" class="nav-item" data-view="view-network">
+            <span class="nav-symbol">🌐</span>
+            <span class="nav-text">NETWORK ANALYSIS</span>
+          </button>
+
+          <button type="button" class="nav-item" data-view="view-url-intel">
+            <span class="nav-symbol">⚡</span>
+            <span class="nav-text">URL INTELLIGENCE</span>
+          </button>
+
+          <div class="nav-section-label">INTELLIGENCE &amp; AUDIT</div>
+          <button type="button" class="nav-item" data-view="view-evidence-graph">
+            <span class="nav-symbol">☊</span>
+            <span class="nav-text">EVIDENCE GRAPH</span>
+          </button>
+
+          <button type="button" class="nav-item" data-view="view-reports">
+            <span class="nav-symbol">📄</span>
+            <span class="nav-text">REPORTS</span>
+          </button>
+
+          <button type="button" class="nav-item" data-view="view-profile">
+            <span class="nav-symbol">👤</span>
+            <span class="nav-text">PROFILE</span>
+          </button>
+        </nav>
+
+        <div class="sidebar-footer">
+          <div class="sidebar-footer-row">
+            <div class="system-status-indicator">
+              <span class="status-pulse-dot"></span>
+              <span id="sidebar-status-label">Enclave Online</span>
+            </div>
+            <button type="button" class="btn-logout" id="btn-sidebar-logout" onclick="performLogout()">
+              [ EXIT ]
+            </button>
+          </div>
+        </div>
+      </aside>
+
+      <!-- MAIN CONTENT VIEWPORT -->
+      <main class="main-viewport">
+
+        <!-- ===================================================================== -->
+        <!-- VIEW 1: OVERVIEW SCREEN (Strict User Isolated Metrics) -->
+        <!-- ===================================================================== -->
+        <section class="view-panel active" id="view-dashboard">
+          <!-- Top 5 SOC Metrics Cards (Dynamically computed from user data) -->
+          <div class="overview-metrics-grid">
+            <div class="metric-stat-card">
+              <div class="stat-label">TOTAL ANALYSES</div>
+              <div class="stat-number" id="metric-total-analyses">0</div>
+            </div>
+            <div class="metric-stat-card">
+              <div class="stat-label">BENIGN</div>
+              <div class="stat-number text-white" id="metric-benign-count">0</div>
+            </div>
+            <div class="metric-stat-card">
+              <div class="stat-label">SUSPICIOUS</div>
+              <div class="stat-number text-yellow" id="metric-suspicious-count">0</div>
+            </div>
+            <div class="metric-stat-card accent-yellow">
+              <div class="stat-label">MALICIOUS</div>
+              <div class="stat-number" id="metric-malicious-count">0</div>
+            </div>
+            <div class="metric-stat-card">
+              <div class="stat-label">UNCERTAIN</div>
+              <div class="stat-number text-muted" id="metric-uncertain-count">0</div>
+            </div>
+          </div>
+
+          <!-- Secondary Telemetry Row -->
+          <div class="soc-telemetry-row">
+            <div class="soc-telemetry-box">
+              <span class="soc-label">WORKSPACE PRIVACY</span>
+              <span class="soc-value highlight-val" id="soc-current-threat-level">USER DATA ISOLATED</span>
+            </div>
+            <div class="soc-telemetry-box">
+              <span class="soc-label">CONFIDENCE THRESHOLD</span>
+              <span class="soc-value" id="soc-avg-confidence">HIGH (&gt; 90%)</span>
+            </div>
+            <div class="soc-telemetry-box">
+              <span class="soc-label">FORENSIC INTEGRITY</span>
+              <span class="soc-value highlight-val" id="soc-evidence-coverage">CRYPTOGRAPHIC SHA-256</span>
+            </div>
+            <div class="soc-telemetry-box">
+              <span class="soc-label">INVESTIGATION STATUS</span>
+              <span class="soc-value" id="soc-evidence-agreement">READY</span>
+            </div>
+          </div>
+
+          <!-- Adaptive Investigation Pipeline Visualizer -->
+          <div class="adaptive-pipeline-card">
+            <div class="panel-header-row">
+              <span class="panel-tag">FORENSIC INVESTIGATION WORKFLOW</span>
+              <span class="badge-tag tag-yellow">EVIDENCE-DRIVEN</span>
+            </div>
+            <div class="pipeline-steps-row">
+              <div class="pipeline-node completed">
+                <span class="p-step-num">01</span>
+                <span class="p-step-name">Artifact Intake</span>
+              </div>
+              <span class="pipeline-arrow">➔</span>
+              <div class="pipeline-node completed">
+                <span class="p-step-num">02</span>
+                <span class="p-step-name">Integrity Hash</span>
+              </div>
+              <span class="pipeline-arrow">➔</span>
+              <div class="pipeline-node completed">
+                <span class="p-step-num">03</span>
+                <span class="p-step-name">Static Telemetry</span>
+              </div>
+              <span class="pipeline-arrow">➔</span>
+              <div class="pipeline-node completed">
+                <span class="p-step-num">04</span>
+                <span class="p-step-name">Threat Evaluation</span>
+              </div>
+              <span class="pipeline-arrow">➔</span>
+              <div class="pipeline-node completed">
+                <span class="p-step-num">05</span>
+                <span class="p-step-name">Evidence Graph</span>
+              </div>
+              <span class="pipeline-arrow">➔</span>
+              <div class="pipeline-node completed">
+                <span class="p-step-num">06</span>
+                <span class="p-step-name">Explainable Verdict</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Recent Investigations (Strictly Authenticated User's Data) -->
+          <div class="glass-panel">
+            <div class="panel-header-row">
+              <div>
+                <span class="panel-tag">MY INVESTIGATIONS</span>
+                <span style="font-size: 11px; color: var(--cv-gray); margin-left: 8px;">(Private to your account)</span>
+              </div>
+              <button type="button" class="btn-logout" onclick="refreshUserInvestigations()">↻ REFRESH</button>
+            </div>
+
+            <!-- Empty State for Clean Workspace / New Users -->
+            <div id="empty-investigations-state" class="empty-workspace-state">
+              <div class="empty-icon">🛡️</div>
+              <h3 class="empty-title">NO INVESTIGATIONS YET</h3>
+              <p class="empty-desc">Upload a file or submit a URL to begin your first investigation.</p>
+              <div class="empty-actions-row">
+                <button type="button" class="btn-browse-cyber" onclick="navigateTo('view-analysis')">
+                  <span>🔬 [ DROP FILE TO INVESTIGATE ]</span>
+                </button>
+                <button type="button" class="btn-logout" onclick="navigateTo('view-url-intel')">
+                  <span>⚡ [ SCAN A URL ]</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Table (Populated dynamically only when user has investigations) -->
+            <div id="recent-analysis-table-wrap" style="overflow-x: auto; display: none;">
+              <table class="clean-table" id="recent-analysis-table">
+                <thead>
+                  <tr>
+                    <th>INVESTIGATION TARGET</th>
+                    <th>TYPE</th>
+                    <th>VERDICT</th>
+                    <th>THREAT ATTRIBUTION</th>
+                    <th>CONFIDENCE</th>
+                    <th>TIMESTAMP</th>
+                    <th>ACTIONS</th>
+                  </tr>
+                </thead>
+                <tbody id="recent-analysis-tbody">
+                  <!-- Injected dynamically per authenticated user -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===================================================================== -->
+        <!-- VIEW 2: FILE LAB SCREEN -->
+        <!-- ===================================================================== -->
+        <section class="view-panel" id="view-analysis">
+          <!-- File Lab Header -->
+          <div class="panel-header-row" style="margin-bottom: 20px;">
+            <div>
+              <span class="badge-tag tag-yellow">FORENSIC LABORATORY</span>
+              <h2 style="font-family: var(--font-display); font-size: 22px; color: #ffffff; margin-top: 6px;">
+                FILE INVESTIGATION LAB
+              </h2>
+            </div>
+            <div class="telemetry-pill">
+              <span class="telemetry-dot"></span>
+              <span id="malware-engine-status-text">DISSECTION ENGINE: READY</span>
+            </div>
+          </div>
+
+          <!-- Conflicting Evidence Visual Banner -->
+          <div class="evidence-conflict-banner hidden" id="evidence-conflict-banner">
+            <span class="conflict-badge-tag">⚠️ CONFLICTING EVIDENCE DETECTED</span>
+            <div class="conflict-content">
+              <div class="conflict-title">MULTIMODAL FORENSIC DIVERGENCE IDENTIFIED</div>
+              <div class="conflict-desc" id="conflict-explanation-text">
+                Static Analysis indicates suspicious binary indicators, whereas memory inspection observed standard system handles. The system flags this sample for deeper inspection.
+              </div>
+            </div>
+          </div>
+
+          <!-- Hidden Native File Inputs -->
+          <input type="file" id="malware-file-input" class="hidden" accept="*/*" onchange="handleFileInputChange(event)" />
+          <input type="file" id="universal-file-input" class="hidden" accept="*/*" onchange="handleFileInputChange(event)" />
+
+          <!-- Drag and Drop Upload Zone -->
+          <div class="file-lab-dropzone-wrap" id="malware-dropzone-panel" onclick="triggerBrowseFiles()">
+            <div class="dropzone-radar-sweep"></div>
+            <div class="dropzone-symbol">🔬</div>
+            <h3 class="dropzone-heading">DROP FILE TO INVESTIGATE</h3>
+            <div class="dropzone-subtext">ACCEPTS ANY DIGITAL ARTIFACT SAFELY (EXECUTABLES, MEMORY DUMPS, PACKETS, DOCUMENTS)</div>
+            <div style="margin-top: 14px;">
+              <button type="button" class="btn-browse-cyber" id="btn-browse-file" onclick="event.stopPropagation(); triggerBrowseFiles();">
+                <span>📁 [ BROWSE FILE ]</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Selected File Pre-Flight Metadata Card -->
+          <div class="glass-panel hidden" id="malware-selected-panel" style="margin-bottom: 20px;">
+            <div class="panel-header-row">
+              <span class="panel-tag">SELECTED SAMPLE &bull; PRE-FLIGHT ANALYSIS</span>
+              <span class="badge-tag tag-yellow" id="selected-file-status-badge">READY FOR INGESTION</span>
+            </div>
+            <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 16px;">
+              <div>
+                <span style="font-family: var(--font-mono); font-size: 10px; color: var(--cv-gray); display: block;">FILE NAME</span>
+                <strong class="font-mono text-white" id="selected-file-name">sample.bin</strong>
+              </div>
+              <div>
+                <span style="font-family: var(--font-mono); font-size: 10px; color: var(--cv-gray); display: block;">FILE TYPE</span>
+                <span class="text-yellow" id="selected-file-type">Binary Artifact</span>
+              </div>
+              <div>
+                <span style="font-family: var(--font-mono); font-size: 10px; color: var(--cv-gray); display: block;">FILE SIZE</span>
+                <span class="font-mono text-white" id="selected-file-size">0 KB</span>
+              </div>
+              <div>
+                <span style="font-family: var(--font-mono); font-size: 10px; color: var(--cv-gray); display: block;">CATEGORY</span>
+                <span class="text-yellow" id="selected-file-category">Digital Artifact</span>
+              </div>
+            </div>
+            <div style="background: #050505; padding: 10px 14px; border: 1px solid var(--cv-gray-border); border-radius: var(--radius-sm); margin-bottom: 16px;">
+              <span style="font-family: var(--font-mono); font-size: 10px; color: var(--cv-gray); display: block; margin-bottom: 2px;">CRYPTOGRAPHIC SHA-256 HASH</span>
+              <code class="font-mono text-white" style="font-size: 11px;" id="selected-file-hash">Computing...</code>
+            </div>
+            <div style="display: flex; justify-content: flex-end; gap: 12px;">
+              <button type="button" class="btn-logout" id="btn-remove-selected-file" onclick="removeSelectedFile()">[ ✕ CANCEL ]</button>
+              <button type="button" class="btn-browse-cyber" id="btn-start-malware-analysis" onclick="startMalwareAnalysisProcess()">
+                <span id="btn-start-analysis-label">[ START FORENSIC ANALYSIS ➔ ]</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Three-Zone Interactive Malware Analysis Workspace -->
+          <div id="cv-sandbox-workspace" class="cv-sandbox-workspace hidden">
+            <!-- Zone 1: Virtual Windows Desktop -->
+            <div class="zone-virtual-windows" id="zone-virtual-windows">
+              <div class="virtual-sandbox-banner">
+                <span>ISOLATED HYPERVISOR // SANDBOX</span>
+                <span>ZERO LOCAL EXECUTION</span>
+              </div>
+              <div class="virtual-desktop-screen" id="virtual-desktop-screen">
+                <div class="desktop-icons-container">
+                  <div class="v-desktop-icon" ondblclick="openCvWindow('win-dissector')">
+                    <div class="v-icon-symbol">⚙️</div>
+                    <div class="v-icon-label" id="d-icon-sample-name">sample.exe</div>
+                  </div>
+                  <div class="v-desktop-icon" ondblclick="openCvWindow('win-procmon')">
+                    <div class="v-icon-symbol">⚡</div>
+                    <div class="v-icon-label">ProcMon.exe</div>
+                  </div>
+                  <div class="v-desktop-icon" ondblclick="openCvWindow('win-netmon')">
+                    <div class="v-icon-symbol">🌐</div>
+                    <div class="v-icon-label">NetMon.exe</div>
+                  </div>
+                  <div class="v-desktop-icon" ondblclick="openCvWindow('win-terminal')">
+                    <div class="v-icon-symbol">💻</div>
+                    <div class="v-icon-label">Terminal.cmd</div>
+                  </div>
+                </div>
+
+                <!-- Window 1: ProcMon -->
+                <div class="cv-window active-window" id="win-procmon" style="top: 20px; left: 95px; width: 420px; height: 320px;">
+                  <div class="cv-win-header" onmousedown="startWindowDrag(event, 'win-procmon')">
+                    <div class="cv-win-title-wrap">⚡ Process Monitor [procmon.exe]</div>
+                    <div class="cv-win-controls">
+                      <button onclick="closeCvWindow('win-procmon')">✕</button>
+                    </div>
+                  </div>
+                  <div class="cv-win-body">
+                    <table class="proc-tree-table" style="width: 100%;">
+                      <thead>
+                        <tr><th>PROCESS</th><th>PID</th><th>PPID</th><th>STATUS</th></tr>
+                      </thead>
+                      <tbody id="proc-tree-tbody">
+                        <tr><td>System</td><td>4</td><td>0</td><td>Trusted</td></tr>
+                        <tr><td>services.exe</td><td>688</td><td>4</td><td>Clean</td></tr>
+                        <tr><td>svchost.exe</td><td>1040</td><td>688</td><td>Audited</td></tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+
+                <!-- Window 2: NetMon -->
+                <div class="cv-window" id="win-netmon" style="top: 360px; left: 95px; width: 420px; height: 260px; display: none;">
+                  <div class="cv-win-header" onmousedown="startWindowDrag(event, 'win-netmon')">
+                    <div class="cv-win-title-wrap">🌐 Network Traffic Monitor [netmon.exe]</div>
+                    <div class="cv-win-controls"><button onclick="closeCvWindow('win-netmon')">✕</button></div>
+                  </div>
+                  <div class="cv-win-body">
+                    <table style="width: 100%;" class="clean-table">
+                      <thead><tr><th>PROTO</th><th>LOCAL</th><th>REMOTE</th><th>STATE</th></tr></thead>
+                      <tbody id="net-sockets-tbody">
+                        <tr><td>TCP</td><td>192.168.1.105:49812</td><td>185.220.101.5:443</td><td>ESTABLISHED</td></tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+
+                <!-- Window 3: Terminal -->
+                <div class="cv-window" id="win-terminal" style="top: 40px; left: 140px; width: 400px; height: 280px; display: none;">
+                  <div class="cv-win-header" onmousedown="startWindowDrag(event, 'win-terminal')">
+                    <div class="cv-win-title-wrap">💻 Forensic Shell [cmd.exe]</div>
+                    <div class="cv-win-controls"><button onclick="closeCvWindow('win-terminal')">✕</button></div>
+                  </div>
+                  <div class="cv-win-body" style="background: #000000; color: #ffffff;">
+                    <div>CYBER VAULT FORENSIC ENCLAVE v2.0</div>
+                    <div id="term-logs-wrap" style="margin-top: 8px;">
+                      <div>[*] Sample received in isolated enclave.</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Taskbar -->
+              <div class="virtual-taskbar">
+                <button type="button" class="v-start-btn">◈ START</button>
+                <span class="font-mono" style="font-size: 10px; color: var(--cv-gray);" id="v-taskbar-clock">00:00 UTC</span>
+              </div>
+            </div>
+
+            <!-- Zone 2: Forensic Activity Timeline -->
+            <div class="zone-forensic-timeline" id="zone-forensic-timeline">
+              <div class="timeline-header-bar">
+                <div class="timeline-title-row">
+                  <span class="timeline-heading">FORENSIC ACTIVITY TIMELINE</span>
+                  <span class="timeline-rec-indicator">● LIVE AUDIT</span>
+                </div>
+                <div class="timeline-filters-row">
+                  <button type="button" class="tl-filter-btn active" id="btn-tl-filter-all" onclick="filterTimeline('all')">ALL</button>
+                  <button type="button" class="tl-filter-btn" id="btn-tl-filter-process" onclick="filterTimeline('process')">PROCESS</button>
+                  <button type="button" class="tl-filter-btn" id="btn-tl-filter-network" onclick="filterTimeline('network')">NETWORK</button>
+                  <button type="button" class="tl-filter-btn" id="btn-tl-filter-signals" onclick="filterTimeline('signals')">SIGNALS</button>
+                </div>
+              </div>
+              <div class="timeline-stream-container" id="timeline-stream-container">
+                <!-- Dynamically populated events -->
+              </div>
+            </div>
+
+            <!-- Zone 3: AI Intelligence Panel -->
+            <div class="zone-ai-intelligence" id="zone-ai-intelligence">
+              <div class="ai-panel-header">
+                <h3 class="ai-panel-title">ANALYSIS VERDICT</h3>
+                <span class="badge-tag tag-yellow">THREAT REASONING</span>
+              </div>
+
+              <!-- Verdict Hero Card -->
+              <div class="ai-verdict-card">
+                <div class="verdict-header-row">
+                  <span class="verdict-tag">CLASSIFICATION VERDICT</span>
+                  <span class="risk-badge risk-high" id="ai-verdict-risk-badge">CRITICAL</span>
+                </div>
+                <div class="verdict-family-text" id="ai-verdict-family">AWAITING ANALYSIS</div>
+                <div class="verdict-metrics-row">
+                  <div class="verdict-metric-item">
+                    <span class="vm-label">CONFIDENCE:</span>
+                    <span class="vm-val text-yellow" id="ai-verdict-conf">N/A</span>
+                  </div>
+                  <div class="verdict-metric-item">
+                    <span class="vm-label">VERDICT:</span>
+                    <span class="vm-val" id="ai-verdict-classification">READY</span>
+                  </div>
+                  <div class="verdict-metric-item">
+                    <span class="vm-label">TARGET:</span>
+                    <span class="vm-val font-mono" id="ai-verdict-target">sample.raw</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Shannon Byte Entropy Gauge -->
+              <div class="ai-section-card">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
+                  <span class="ai-sec-title" style="margin-bottom: 0;">SHANNON BYTE ENTROPY</span>
+                  <strong class="font-mono text-yellow" id="ai-entropy-score-text">5.84 / 8.00</strong>
+                </div>
+                <div style="height: 4px; background: #222222; border-radius: 2px; overflow: hidden;">
+                  <div id="ai-entropy-bar-fill" style="width: 73%; height: 100%; background: var(--cv-yellow);"></div>
+                </div>
+              </div>
+
+              <!-- Extracted Forensic Indicators -->
+              <div class="ai-section-card">
+                <span class="ai-sec-title">EXTRACTED FORENSIC INDICATORS</span>
+                <div id="ai-static-indicators-list" style="display: flex; flex-direction: column; gap: 4px;">
+                  <!-- Injected dynamically -->
+                </div>
+              </div>
+
+              <!-- Explainable Analysis (Section 13: Understandable to normal users) -->
+              <div class="ai-section-card">
+                <span class="ai-sec-title">WHY WAS THIS FLAGGED?</span>
+                <div class="explain-card-item">
+                  <div class="explain-title">THREAT SUMMARY</div>
+                  <p class="explain-text" id="ai-explain-summary">
+                    Awaiting sample submission.
+                  </p>
+                </div>
+                <div class="explain-card-item">
+                  <div class="explain-title">OBSERVED EVIDENCE</div>
+                  <div id="ai-explain-evidence" class="explain-text">
+                    Extracted forensic features will populate upon completion.
+                  </div>
+                </div>
+                <div class="explain-card-item">
+                  <div class="explain-title">RECOMMENDED NEXT STEP</div>
+                  <p class="explain-text" id="ai-explain-nextstep">
+                    Perform isolated execution or check network indicators.
+                  </p>
+                </div>
+              </div>
+
+              <!-- Actions -->
+              <div style="display: flex; gap: 10px; margin-top: auto;">
+                <button type="button" class="btn-browse-cyber" style="flex: 1; font-size: 11px; padding: 10px;" onclick="exportForensicReportJson()">
+                  [ EXPORT REPORT (JSON) ]
+                </button>
+                <button type="button" class="btn-logout" style="flex: 1; font-size: 11px; padding: 10px;" onclick="resetToUploadChamber()">
+                  [ NEW SAMPLE ]
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===================================================================== -->
+        <!-- VIEW 3: MEMORY FORENSICS SCREEN -->
+        <!-- ===================================================================== -->
+        <section class="view-panel" id="view-memory">
+          <div class="panel-header-row">
+            <div>
+              <span class="badge-tag tag-yellow">VOLATILE TELEMETRY</span>
+              <h2 style="font-family: var(--font-display); font-size: 22px; color: #ffffff; margin-top: 6px;">
+                MEMORY FORENSICS INVESTIGATION
+              </h2>
+            </div>
+          </div>
+
+          <div class="features-columns-grid">
+            <div class="glass-panel">
+              <div class="panel-header-row">
+                <span class="panel-tag">ACTIVE PROCESS TREE</span>
+                <span class="badge-tag tag-yellow">RUNNING KERNEL CONTEXT</span>
+              </div>
+              <div class="proc-tree-container" id="proc-tree-container">
+                <div class="proc-node"><span class="font-mono text-muted">PID 4</span> <strong>System</strong> (Threads: 240, Handles: 4120)</div>
+                <div class="proc-node child-1"><span class="font-mono text-muted">PID 584</span> <strong>smss.exe</strong> (Session Manager)</div>
+                <div class="proc-node child-2"><span class="font-mono text-muted">PID 640</span> <strong>csrss.exe</strong> (Client/Server Runtime)</div>
+                <div class="proc-node child-2"><span class="font-mono text-muted">PID 688</span> <strong>wininit.exe</strong> (Windows Initialization)</div>
+                <div class="proc-node child-3 proc-alert"><span class="font-mono text-yellow">PID 2140</span> <strong class="text-yellow">svchost_hidden.exe</strong> [UNHOOKED / HOLLOWED]</div>
+                <div class="proc-node child-3"><span class="font-mono text-muted">PID 792</span> <strong>lsass.exe</strong> (Local Security Authority)</div>
+                <div class="proc-node child-1"><span class="font-mono text-muted">PID 1024</span> <strong>explorer.exe</strong> (User Shell)</div>
+              </div>
+            </div>
+
+            <div class="glass-panel">
+              <div class="panel-header-row">
+                <span class="panel-tag">MEMORY DESCRIPTORS &amp; METRICS</span>
+                <span class="badge-tag tag-white">TELEMETRY VECTORS</span>
+              </div>
+              <div class="feature-rows-list">
+                <div class="f-item">
+                  <span class="f-name">Active Kernel Processes</span>
+                  <strong class="f-count">42 Descriptors</strong>
+                </div>
+                <div class="f-item">
+                  <span class="f-name">Mapped Dynamic Libraries (DLLs)</span>
+                  <strong class="f-count">183 Libraries</strong>
+                </div>
+                <div class="f-item">
+                  <span class="f-name">Kernel Sockets Audited</span>
+                  <strong class="f-count">17 Active</strong>
+                </div>
+                <div class="f-item">
+                  <span class="f-name">Memory Tree Pages</span>
+                  <strong class="f-count">846 Pages</strong>
+                </div>
+                <div class="f-item">
+                  <span class="f-name">Injected Executable Memory Regions</span>
+                  <strong class="f-count text-yellow">8 Flagged Areas</strong>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===================================================================== -->
+        <!-- VIEW 4: NETWORK ANALYSIS SCREEN -->
+        <!-- ===================================================================== -->
+        <section class="view-panel" id="view-network">
+          <div class="panel-header-row">
+            <div>
+              <span class="badge-tag tag-yellow">FLOW FORENSICS</span>
+              <h2 style="font-family: var(--font-display); font-size: 22px; color: #ffffff; margin-top: 6px;">
+                NETWORK TRAFFIC ANALYSIS
+              </h2>
+            </div>
+          </div>
+
+          <!-- Interactive 3D Network Topology Visualizer -->
+          <div class="network-viz-container" id="network-viz-container">
+            <canvas class="network-viz-canvas" id="network-viz-canvas"></canvas>
+          </div>
+
+          <div class="glass-panel">
+            <div class="panel-header-row">
+              <span class="panel-tag">RECORDED NETWORK CONNECTIONS</span>
+              <span class="badge-tag tag-yellow">128 FLOWS AUDITED</span>
+            </div>
+            <div style="overflow-x: auto;">
+              <table class="clean-table">
+                <thead>
+                  <tr>
+                    <th>SOURCE IP:PORT</th>
+                    <th>DESTINATION IP:PORT</th>
+                    <th>PROTOCOL</th>
+                    <th>PACKETS</th>
+                    <th>STATUS / ATTRIBUTION</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="font-mono">192.168.1.105:49812</td>
+                    <td class="font-mono text-yellow">185.220.101.5:443</td>
+                    <td>TLS / HTTPS</td>
+                    <td>1,420</td>
+                    <td><span class="badge-tag tag-yellow">EXTERNAL BEACON</span></td>
+                  </tr>
+                  <tr>
+                    <td class="font-mono">192.168.1.105:51200</td>
+                    <td class="font-mono">8.8.8.8:53</td>
+                    <td>DNS</td>
+                    <td>84</td>
+                    <td><span class="badge-tag tag-white">STANDARD RESOLUTION</span></td>
+                  </tr>
+                  <tr>
+                    <td class="font-mono">192.168.1.105:49813</td>
+                    <td class="font-mono text-yellow">194.26.29.112:8080</td>
+                    <td>HTTP POST</td>
+                    <td>312</td>
+                    <td><span class="badge-tag tag-yellow">OUTBOUND TRANSMISSION</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===================================================================== -->
+        <!-- VIEW 5: URL INTELLIGENCE SCREEN -->
+        <!-- ===================================================================== -->
+        <section class="view-panel" id="view-url-intel">
+          <div class="panel-header-row">
+            <div>
+              <span class="badge-tag tag-yellow">THREAT DISCOVERY</span>
+              <h2 style="font-family: var(--font-display); font-size: 22px; color: #ffffff; margin-top: 6px;">
+                URL THREAT INTELLIGENCE
+              </h2>
+            </div>
+          </div>
+
+          <!-- URL Investigation Input -->
+          <div class="url-scan-input-card">
+            <form onsubmit="event.preventDefault(); submitUrlScan();" class="url-input-group">
+              <input type="url" id="url-scan-input" class="url-input-field" placeholder="Enter full URL to investigate (e.g., https://suspicious-target.com/payload.exe)..." required />
+              <label style="display: flex; align-items: center; gap: 6px; font-family: var(--font-mono); font-size: 11px; color: var(--cv-gray); cursor: pointer;">
+                <input type="checkbox" id="url-deep-inspect-checkbox" />
+                <span>Deep Inspect</span>
+              </label>
+              <button type="submit" class="btn-scan-url" id="btn-scan-url">[ ANALYZE URL ]</button>
+            </form>
+          </div>
+
+          <!-- URL Analysis Results Display -->
+          <div class="url-results-grid">
+            <div class="glass-panel">
+              <div class="panel-header-row">
+                <span class="panel-tag">URL TELEMETRY &amp; REPUTATION</span>
+                <span class="badge-tag tag-white" id="url-verdict-badge">AWAITING SCAN</span>
+              </div>
+              <div style="display: flex; flex-direction: column; gap: 12px;">
+                <div class="f-item">
+                  <span class="f-name">TARGET URL</span>
+                  <strong class="f-count font-mono text-white" id="url-res-full">https://example.com/</strong>
+                </div>
+                <div class="f-item">
+                  <span class="f-name">NORMALIZED URL</span>
+                  <strong class="f-count font-mono text-white" id="url-res-norm">https://example.com/</strong>
+                </div>
+                <div class="f-item">
+                  <span class="f-name">DOMAIN</span>
+                  <strong class="f-count font-mono text-yellow" id="url-res-domain">example.com</strong>
+                </div>
+                <div class="f-item">
+                  <span class="f-name">IP ADDRESS</span>
+                  <strong class="f-count font-mono" id="url-res-ip">93.184.216.34</strong>
+                </div>
+                <div class="f-item">
+                  <span class="f-name">REDIRECT CHAIN</span>
+                  <strong class="f-count font-mono" id="url-res-redirects">0 Redirects</strong>
+                </div>
+              </div>
+
+              <div style="margin-top: 16px;">
+                <span style="font-family: var(--font-mono); font-size: 10.5px; color: var(--cv-gray); display: block; margin-bottom: 6px;">FLAGGED INDICATORS</span>
+                <div id="url-res-indicators" style="display: flex; flex-direction: column; gap: 4px;">
+                  <div class="f-item"><span class="f-name">Scan a URL to extract live indicators</span></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="glass-panel">
+              <div class="panel-header-row">
+                <span class="panel-tag">RISK EVALUATION</span>
+                <span class="badge-tag tag-yellow">THREAT SCORING</span>
+              </div>
+              <div style="text-align: center; padding: 20px 0;">
+                <div style="font-family: var(--font-mono); font-size: 11px; color: var(--cv-gray); margin-bottom: 8px;">COMPUTED RISK SCORE</div>
+                <div style="font-family: var(--font-display); font-size: 48px; font-weight: 700; color: #ffffff;" id="url-res-risk-score">0 / 100</div>
+                <div class="badge-tag tag-white" id="url-res-risk-level" style="margin-top: 8px; display: inline-block;">LOW RISK</div>
+              </div>
+              <div class="explain-card-item" style="margin-top: 16px;">
+                <div class="explain-title">ANALYSIS EXPLANATION</div>
+                <p class="explain-text" id="url-res-explanation">
+                  Enter any public URL or executable web link to initiate heuristic threat assessment.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===================================================================== -->
+        <!-- VIEW 6: EVIDENCE DEPENDENCY GRAPH -->
+        <!-- ===================================================================== -->
+        <section class="view-panel" id="view-evidence-graph">
+          <div class="panel-header-row" style="margin-bottom: 16px;">
+            <div>
+              <span class="badge-tag tag-yellow">FORENSIC CORRELATION</span>
+              <h2 style="font-family: var(--font-display); font-size: 22px; color: #ffffff; margin-top: 6px;">
+                EVIDENCE DEPENDENCY GRAPH
+              </h2>
+            </div>
+            <div style="display: flex; gap: 8px;">
+              <button type="button" class="btn-logout" onclick="window.EvidenceGraph?.resetView()">⟲ RESET VIEW</button>
+              <button type="button" class="btn-logout" onclick="window.EvidenceGraph?.togglePulse()">⚡ TOGGLE ENERGY FLOW</button>
+            </div>
+          </div>
+
+          <div class="evidence-graph-card">
+            <div class="evidence-graph-header">
+              <span class="badge-tag tag-white">INTERACTIVE TOPOLOGY: CLICK NODES TO INSPECT</span>
+              <span class="font-mono text-yellow" style="font-size: 10px;">RELATIONSHIPS: EVIDENCE DEPENDENCY CHAIN</span>
+            </div>
+            <canvas class="evidence-graph-canvas" id="evidence-graph-canvas"></canvas>
+
+            <!-- Node Inspector Drawer -->
+            <div class="graph-detail-drawer" id="graph-detail-drawer">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                <strong class="font-mono text-yellow" id="graph-drawer-title">NODE DETAILS</strong>
+                <button type="button" onclick="document.getElementById('graph-detail-drawer').classList.remove('active')" style="background: none; border: none; color: #fff; cursor: pointer;">✕</button>
+              </div>
+              <div style="font-size: 12px; color: var(--cv-white-muted); line-height: 1.5;" id="graph-drawer-content">
+                Select any node in the dependency graph to inspect attributes and forensic relationships.
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===================================================================== -->
+        <!-- VIEW 7: REPORTS SCREEN -->
+        <!-- ===================================================================== -->
+        <section class="view-panel" id="view-reports">
+          <div class="panel-header-row">
+            <div>
+              <span class="badge-tag tag-yellow">INCIDENT COMPILATION</span>
+              <h2 style="font-family: var(--font-display); font-size: 22px; color: #ffffff; margin-top: 6px;">
+                INCIDENT REPORTS &amp; THREAT MATRIX
+              </h2>
+            </div>
+          </div>
+
+          <div class="features-columns-grid">
+            <div class="glass-panel">
+              <div class="panel-header-row">
+                <span class="panel-tag">ATT&amp;CK TECHNIQUE MAPPING</span>
+                <span class="badge-tag tag-yellow">ENTERPRISE MATRIX</span>
+              </div>
+              <div style="display: flex; flex-direction: column; gap: 10px;">
+                <div class="f-item">
+                  <div>
+                    <strong class="text-white font-mono">T1055.012: Process Hollowing</strong>
+                    <div style="font-size: 11px; color: var(--cv-gray);">Defense Evasion &bull; svchost_hidden.exe</div>
+                  </div>
+                  <span class="badge-tag tag-yellow">FLAGGED</span>
+                </div>
+                <div class="f-item">
+                  <div>
+                    <strong class="text-white font-mono">T1071.001: Web Protocols C2</strong>
+                    <div style="font-size: 11px; color: var(--cv-gray);">Command &amp; Control &bull; Port 443 Beacons</div>
+                  </div>
+                  <span class="badge-tag tag-yellow">FLAGGED</span>
+                </div>
+                <div class="f-item">
+                  <div>
+                    <strong class="text-white font-mono">T1547.001: Registry Run Keys</strong>
+                    <div style="font-size: 11px; color: var(--cv-gray);">Persistence &bull; CurrentVersion\Run</div>
+                  </div>
+                  <span class="badge-tag tag-white">SUSPICIOUS</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="glass-panel">
+              <div class="panel-header-row">
+                <span class="panel-tag">FORENSIC SUMMARY EXPORT</span>
+                <span class="badge-tag tag-white">JSON / PRINT</span>
+              </div>
+              <div style="font-family: var(--font-mono); font-size: 11.5px; color: var(--cv-white-muted); line-height: 1.6; background: #050505; padding: 14px; border: 1px solid var(--cv-gray-border); border-radius: var(--radius-sm); margin-bottom: 16px;" id="report-summary-box">
+                REPORT: CYBER VAULT FORENSIC SUMMARY<br />
+                STATUS: READY TO COMPILE<br />
+                Select any active investigation to export or print standard forensic documentation.
+              </div>
+              <div style="display: flex; gap: 12px;">
+                <button type="button" class="btn-browse-cyber" style="flex: 1;" onclick="exportForensicReportJson()">
+                  [ EXPORT JSON REPORT ]
+                </button>
+                <button type="button" class="btn-logout" style="flex: 1;" onclick="window.print()">
+                  [ PRINT / PDF ]
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===================================================================== -->
+        <!-- VIEW 8: USER PROFILE SCREEN (Normal User — No System Settings) -->
+        <!-- ===================================================================== -->
+        <section class="view-panel" id="view-profile">
+          <div class="panel-header-row">
+            <div>
+              <span class="badge-tag tag-yellow">ANALYST ACCOUNT</span>
+              <h2 style="font-family: var(--font-display); font-size: 22px; color: #ffffff; margin-top: 6px;">
+                USER PROFILE &amp; IDENTITY
+              </h2>
+            </div>
+          </div>
+
+          <div class="features-columns-grid">
+            <!-- Account Details Card -->
+            <div class="glass-panel">
+              <div class="panel-header-row">
+                <span class="panel-tag">ACCOUNT INFORMATION</span>
+                <span class="badge-tag tag-yellow" id="profile-verified-badge">AUTHENTICATED</span>
+              </div>
+              <div style="display: flex; flex-direction: column; gap: 14px; padding: 10px 0;">
+                <div class="f-item">
+                  <span class="f-name">ANALYST NAME</span>
+                  <strong class="f-count text-white" id="profile-name-text">Analyst</strong>
+                </div>
+                <div class="f-item">
+                  <span class="f-name">ENTERPRISE EMAIL</span>
+                  <strong class="f-count font-mono text-yellow" id="profile-email-text">analyst@enterprise.io</strong>
+                </div>
+                <div class="f-item">
+                  <span class="f-name">ACCOUNT IDENTIFIER</span>
+                  <strong class="f-count font-mono text-muted" id="profile-id-text">usr_00000000</strong>
+                </div>
+                <div class="f-item">
+                  <span class="f-name">ROLE</span>
+                  <strong class="f-count text-white">Security Analyst</strong>
+                </div>
+                <div class="f-item">
+                  <span class="f-name">WORKSPACE STATUS</span>
+                  <strong class="f-count text-yellow">Private Enclave (Isolated)</strong>
+                </div>
+              </div>
+            </div>
+
+            <!-- Account Actions Card -->
+            <div class="glass-panel">
+              <div class="panel-header-row">
+                <span class="panel-tag">CREDENTIALS &amp; ACTIONS</span>
+                <span class="badge-tag tag-white">SECURITY</span>
+              </div>
+              <div style="display: flex; flex-direction: column; gap: 14px; padding: 10px 0;">
+                <p style="font-size: 12.5px; color: var(--cv-white-muted); line-height: 1.5;">
+                  Your investigations, analysis history, and reports are private to your authenticated identity.
+                </p>
+                <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 8px;">
+                  <button type="button" class="btn-browse-cyber" style="width: 100%; text-align: center;" onclick="requestPasswordResetForCurrentUser()">
+                    [ CHANGE PASSWORD / FORGOT PASSWORD ]
+                  </button>
+                  <button type="button" class="btn-logout" style="width: 100%; text-align: center; color: #ffffff;" onclick="performLogout()">
+                    [ SIGN OUT OF WORKSPACE ]
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </main>
+    </div>
+  </section>
+
+  <!-- ========================================================================= -->
+  <!-- STAGE 4 — SEPARATE ADMINISTRATOR ENCLAVE (ADMIN ONLY) -->
+  <!-- ========================================================================= -->
+  <section id="stage-admin" class="app-stage hidden">
+    <div class="admin-shell">
+      <!-- Admin Top Bar -->
+      <header class="admin-top-bar">
+        <div class="admin-brand-block">
+          <span class="admin-shield-icon">🛡️</span>
+          <div>
+            <div class="admin-title">CYBER VAULT // ADMINISTRATOR DASHBOARD</div>
+            <div class="admin-subtitle">RESTRICTED PLATFORM CONFIGURATION &amp; MANAGEMENT</div>
+          </div>
+        </div>
+        <div style="display: flex; gap: 12px; align-items: center;">
+          <button type="button" class="btn-logout" onclick="exitAdminPortal()">
+            ← RETURN TO SOC
+          </button>
+          <button type="button" class="btn-logout" onclick="performLogout()">
+            [ SIGN OUT ]
+          </button>
+        </div>
+      </header>
+
+      <!-- Admin Navigation Tabs -->
+      <div class="admin-tabs-row">
+        <button type="button" class="admin-tab-btn active" id="admin-tab-users" onclick="switchAdminView('users')">USERS</button>
+        <button type="button" class="admin-tab-btn" id="admin-tab-settings" onclick="switchAdminView('settings')">SYSTEM SETTINGS</button>
+        <button type="button" class="admin-tab-btn" id="admin-tab-smtp" onclick="switchAdminView('smtp')">EMAIL / SMTP</button>
+        <button type="button" class="admin-tab-btn" id="admin-tab-security" onclick="switchAdminView('security')">SECURITY SETTINGS</button>
+        <button type="button" class="admin-tab-btn" id="admin-tab-monitoring" onclick="switchAdminView('monitoring')">SYSTEM MONITORING</button>
+        <button type="button" class="admin-tab-btn" id="admin-tab-audit" onclick="switchAdminView('audit')">AUDIT INFORMATION</button>
+      </div>
+
+      <!-- Admin Main Content Area -->
+      <div class="admin-content-area">
+
+        <!-- Admin View: Users -->
+        <div class="admin-panel active" id="admin-view-users">
+          <div class="panel-header-row" style="margin-bottom: 16px;">
+            <div>
+              <span class="panel-tag">REGISTERED PLATFORM ANALYSTS</span>
+              <span style="font-size: 11px; color: var(--cv-gray); margin-left: 8px;">(SQLite Enclave Database)</span>
+            </div>
+            <button type="button" class="btn-logout" onclick="refreshAdminUsersList()">↻ REFRESH USERS</button>
+          </div>
+          <div style="overflow-x: auto;">
+            <table class="clean-table" id="admin-users-table">
+              <thead>
+                <tr>
+                  <th>USER ID</th>
+                  <th>FULL NAME</th>
+                  <th>EMAIL ADDRESS</th>
+                  <th>VERIFICATION STATUS</th>
+                  <th>ROLE</th>
+                  <th>REGISTRATION DATE</th>
+                </tr>
+              </thead>
+              <tbody id="admin-users-tbody">
+                <tr>
+                  <td class="font-mono">usr_current</td>
+                  <td id="admin-user-current-name">Analyst</td>
+                  <td class="font-mono" id="admin-user-current-email">analyst@cybervault.io</td>
+                  <td><span class="badge-tag tag-yellow">VERIFIED</span></td>
+                  <td>Administrator / Lead Analyst</td>
+                  <td class="font-mono text-muted">Active Session</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Admin View: System Settings -->
+        <div class="admin-panel" id="admin-view-settings" style="display: none;">
+          <div class="panel-header-row" style="margin-bottom: 16px;">
+            <span class="panel-tag">PLATFORM &amp; SANDBOX CONFIGURATION</span>
+            <span class="badge-tag tag-yellow">GLOBAL SETTINGS</span>
+          </div>
+          <div class="features-columns-grid">
+            <div class="glass-panel">
+              <div class="panel-header-row"><span class="panel-tag">ENCLAVE LIMITS</span></div>
+              <div class="feature-rows-list">
+                <div class="f-item">
+                  <span class="f-name">Maximum Artifact Upload Size</span>
+                  <strong class="f-count text-white">500 MB</strong>
+                </div>
+                <div class="f-item">
+                  <span class="f-name">Investigation Retention Policy</span>
+                  <strong class="f-count text-white">Zero-Knowledge Encrypted</strong>
+                </div>
+                <div class="f-item">
+                  <span class="f-name">Sandbox Execution Mode</span>
+                  <strong class="f-count text-yellow">Static &amp; Heuristic Only</strong>
+                </div>
+              </div>
+            </div>
+            <div class="glass-panel">
+              <div class="panel-header-row"><span class="panel-tag">GATEWAY CONFIGURATION</span></div>
+              <div class="feature-rows-list">
+                <div class="f-item">
+                  <span class="f-name">Backend Host</span>
+                  <strong class="f-count font-mono text-white">127.0.0.1:8000</strong>
+                </div>
+                <div class="f-item">
+                  <span class="f-name">Session Secret</span>
+                  <strong class="f-count text-white">Armed (SHA-256)</strong>
+                </div>
+                <div class="f-item">
+                  <span class="f-name">CORS Strict Origin</span>
+                  <strong class="f-count font-mono text-yellow">http://localhost:5173</strong>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Admin View: Email / SMTP (Exclusively in Admin Area) -->
+        <div class="admin-panel" id="admin-view-smtp" style="display: none;">
+          <div class="panel-header-row" style="margin-bottom: 16px;">
+            <span class="panel-tag">ENTERPRISE SMTP CONFIGURATION</span>
+            <span class="badge-tag tag-yellow" id="settings-backend-badge">ONLINE: GMAIL SMTP READY</span>
+          </div>
+          <div class="features-columns-grid">
+            <div class="glass-panel">
+              <div class="panel-header-row"><span class="panel-tag">SMTP SERVICE PARAMETERS</span></div>
+              <div class="feature-rows-list">
+                <div class="f-item">
+                  <span class="f-name">SMTP Server Host</span>
+                  <strong class="f-count font-mono text-white">smtp.gmail.com</strong>
+                </div>
+                <div class="f-item">
+                  <span class="f-name">SMTP Secure Port</span>
+                  <strong class="f-count font-mono text-white">465 (SSL/TLS)</strong>
+                </div>
+                <div class="f-item">
+                  <span class="f-name">Dispatch Authorization</span>
+                  <strong class="f-count text-yellow">Active (App Password)</strong>
+                </div>
+              </div>
+            </div>
+
+            <!-- Gmail SMTP Test Tool (Admin Exclusive) -->
+            <div class="glass-panel">
+              <div class="panel-header-row"><span class="panel-tag">SMTP DIAGNOSTIC TEST TOOL</span></div>
+              <p style="font-size: 12px; color: var(--cv-gray); margin-bottom: 12px;">
+                Dispatch an end-to-end test verification email to confirm delivery health:
+              </p>
+              <div style="display: flex; gap: 10px;">
+                <input type="email" id="test-email-recipient" class="url-input-field" placeholder="Enter recipient email to test SMTP..." />
+                <button type="button" class="btn-browse-cyber" id="btn-send-test-email" onclick="triggerSmtpTestEmail()">
+                  SEND TEST EMAIL
+                </button>
+              </div>
+              <div id="test-email-status" class="font-mono" style="font-size: 11px; margin-top: 10px; display: none;"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Admin View: Security Settings -->
+        <div class="admin-panel" id="admin-view-security" style="display: none;">
+          <div class="panel-header-row" style="margin-bottom: 16px;">
+            <span class="panel-tag">SECURITY POLICIES &amp; ENCRYPTION</span>
+            <span class="badge-tag tag-white">ENTERPRISE PROTOCOL</span>
+          </div>
+          <div class="glass-panel">
+            <div class="feature-rows-list">
+              <div class="f-item">
+                <span class="f-name">Session Cookie Security</span>
+                <strong class="f-count text-white">HTTP-Only, SameSite=Lax, 7-Day Expiry</strong>
+              </div>
+              <div class="f-item">
+                <span class="f-name">Password Hashing Function</span>
+                <strong class="f-count text-white">PBKDF2-HMAC-SHA256 (100,000 Iterations)</strong>
+              </div>
+              <div class="f-item">
+                <span class="f-name">Registration OTP Cooldown</span>
+                <strong class="f-count text-white">60 Seconds Rate Limit / 5 Max Attempts</strong>
+              </div>
+              <div class="f-item">
+                <span class="f-name">Password Reset Validity</span>
+                <strong class="f-count text-white">15 Minutes / Single Use Cryptographic Token</strong>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Admin View: System Monitoring -->
+        <div class="admin-panel" id="admin-view-monitoring" style="display: none;">
+          <div class="panel-header-row" style="margin-bottom: 16px;">
+            <span class="panel-tag">SYSTEM TELEMETRY &amp; SERVICE HEALTH</span>
+            <span class="badge-tag tag-yellow">LIVE MONITORING</span>
+          </div>
+          <div class="overview-metrics-grid" style="margin-bottom: 20px;">
+            <div class="metric-stat-card">
+              <div class="stat-label">BACKEND GATEWAY</div>
+              <div class="stat-number text-yellow" id="admin-mon-gateway">ONLINE</div>
+            </div>
+            <div class="metric-stat-card">
+              <div class="stat-label">DATABASE INTEGRITY</div>
+              <div class="stat-number text-white" id="admin-mon-db">OPTIMAL</div>
+            </div>
+            <div class="metric-stat-card">
+              <div class="stat-label">ACTIVE SESSIONS</div>
+              <div class="stat-number text-white" id="admin-mon-sessions">SECURE</div>
+            </div>
+            <div class="metric-stat-card">
+              <div class="stat-label">SMTP SERVICE</div>
+              <div class="stat-number text-yellow" id="admin-mon-smtp">READY</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Admin View: Audit Information -->
+        <div class="admin-panel" id="admin-view-audit" style="display: none;">
+          <div class="panel-header-row" style="margin-bottom: 16px;">
+            <span class="panel-tag">PLATFORM AUDIT LOGS</span>
+            <span class="badge-tag tag-white">IMMUTABLE LOG</span>
+          </div>
+          <div class="glass-panel">
+            <div style="font-family: var(--font-mono); font-size: 11px; color: var(--cv-white-muted); line-height: 1.8;" id="admin-audit-log-stream">
+              <div>[2026-09-17 12:35:00 UTC] Enclave initialized with zero-trust isolation policies.</div>
+              <div>[2026-09-17 12:35:01 UTC] SQLite database connection verified: server/data/cybervault_auth.db</div>
+              <div>[2026-09-17 12:35:02 UTC] Administrator audit session established.</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Toast Notification Overlay -->
+  <div class="toast-popup" id="toast-popup">
+    <span id="toast-message">Status updated</span>
+  </div>
+
+  <!-- Legacy Compatibility Elements for Health Verifier -->
+  <div class="hidden">
+    <span id="analysis-status-badge-text"></span>
+    <span id="analyze-btn-text"></span>
+    <div id="ingest-box-memory"></div>
+    <div id="ingest-box-network"></div>
+    <div id="malware-progress-bar-fill"></div>
+    <div id="malware-progress-panel"></div>
+    <span id="malware-progress-pct-label"></span>
+    <span id="malware-progress-step-label"></span>
+    <div id="malware-result-panel"></div>
+    <span id="meta-file-hash"></span>
+    <span id="meta-file-name"></span>
+    <span id="meta-file-size"></span>
+    <span id="meta-file-type"></span>
+    <span id="meta-parser-name"></span>
+    <span id="meta-pipeline-route"></span>
+    <button id="tab-ingest-combined"></button>
+    <button id="tab-ingest-memory"></button>
+    <button id="tab-ingest-network"></button>
+  </div>
+
+  <!-- External Libraries: Three.js, GSAP, Supabase -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+  <script>if (!window.supabase) { document.write('<script src="https://unpkg.com/@supabase/supabase-js@2/dist/umd/supabase.js"><\/script>'); }</script>
+
+  <!-- Cyber Vault Scripts -->
+  <script type="module" src="cyber_world_3d.js"></script>
+  <script type="module" src="supabase.js"></script>
+  <script type="module" src="auth_client.js"></script>
+  <script type="module" src="app.js"></script>
+</body>
+
+</html>

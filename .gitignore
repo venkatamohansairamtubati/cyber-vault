@@ -1,0 +1,23 @@
+# Dependencies
+node_modules/
+__pycache__/
+*.pyc
+
+# Environment Files & Secrets
+.env
+.env.*
+!.env.example
+
+# Local SQLite Database
+server/data/*.db
+server/data/*.db-journal
+
+# Build outputs
+dist/
+build/
+
+# Uploads & Temp files
+backend/uploads/*
+!backend/uploads/.gitkeep
+scratch/
+*.log
